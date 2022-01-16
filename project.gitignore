@@ -1,0 +1,13 @@
+# maven build files
+**/target
+**/*.class
+
+# python build files
+**/__pycache__
+**/*.pyc
+
+# python venv folder
+venv
+
+# include
+!config/**
