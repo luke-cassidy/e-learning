@@ -1,0 +1,40 @@
+apply plugin: "base"
+
+task copyDocs(type: Copy) {
+    from 'src'
+    into 'build/test'
+    exclude '**/*bin'
+    setIncludeEmptyDirs false
+}
+
+task zipDocs(type: Zip) {
+    dependsOn copyDocs
+    from 'build/test'
+//    destinationDir new File("build")
+//    archiveName "test.zip"
+}
+
+task tarTextFiles(type: Tar) {
+    doFirst {
+        println 'Creating TAR file...'
+    }
+    from 'src'
+    into 'text'
+    include '**/*.txt'
+    setIncludeEmptyDirs false
+    setCompression Compression.GZIP
+    // most concise way
+    rename '\\.txt\$', '\\.text'
+    // concise way
+//    rename { it.replaceAll('\\.txt$', '\\.text') }
+    // alternative more verbose way
+//    eachFile { FileCopyDetails copyDetails ->
+//        copyDetails.setName(copyDetails.getName().replaceAll('\\.txt$', '\\.text'))
+//    }
+}
+
+task createArchive() {
+    dependsOn clean
+    dependsOn tarTextFiles
+    dependsOn zipDocs
+}

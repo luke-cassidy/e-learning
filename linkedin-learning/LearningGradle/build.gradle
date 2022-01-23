@@ -1,0 +1,25 @@
+apply from: 'archiving.gradle'
+apply plugin: 'java'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation gradleApi()
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.8.2'
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.2'
+}
+
+javadoc {
+    getOptions().setHeader("Calculator")
+    setVerbose true
+}
+
+test {
+    useJUnitPlatform()
+    getTestLogging().setExceptionFormat "full"
+}
