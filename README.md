@@ -17,3 +17,6 @@ This project contains work that I completed as part of various e-learning course
 2. `23/01/2022`
    - added LinkedIn Learning course, Learning Gradle
    - added LinkedIn Learning course, Learning Groovy
+
+3. `28/01/2022`
+   - added MIT Open Learning course, MITx 6.004x Computation Structures
