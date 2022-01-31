@@ -20,3 +20,6 @@ This project contains work that I completed as part of various e-learning course
 
 3. `28/01/2022`
    - added MIT Open Learning course, MITx 6.004x Computation Structures
+
+4. `31/01/2022`
+   - added Lab1-1 soulutios to MITx 6.004x Computation Structures
