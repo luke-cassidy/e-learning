@@ -1,0 +1,19 @@
+//SA = 000,SB = 001,SC = 010
+//SD = 011,SE = 100,SF = 101
+
+0b000_01 // SA->SA U=0, V=1
+0b001_01 // SA->SB U=0, V=1
+0b011_00 // SB->SD U=0, V=0
+0b010_00 // SB->SC U=0, V=0
+0b011_11 // SC->SD U=1, V=1
+0b100_11 // SC->SE U=1, V=1
+0b100_00 // SD->SE U=0, V=0
+0b101_00 // SD->SF U=0, V=0
+0b101_00 // SE->SF U=0, V=0
+0b010_00 // SE->SC U=0, V=0
+0b000_10 // SF->SA U=1, V=0
+0b101_10 // SF->SF U=1, V=0
+? // Don't care
+? // Don't care
+? // Don't care
+? // Don't care
