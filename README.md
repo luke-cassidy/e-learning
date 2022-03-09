@@ -29,3 +29,6 @@ This project contains work that I completed as part of various e-learning course
 
 6. `28/02/2022`
    - added Lab3 solutions to MITx 6.004x Computation Structures
+
+7. `09/03/2022`
+   - added MITx 6.004x Computation Structures, quick reference guide
