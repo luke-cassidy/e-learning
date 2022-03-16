@@ -32,3 +32,6 @@ This project contains work that I completed as part of various e-learning course
 
 7. `09/03/2022`
    - added MITx 6.004x Computation Structures, quick reference guide
+
+8. `16/03/2022`
+   - added Lab 4, full ALU jade implementation into saved_state.json for MITx 6.004x Computation Structures
