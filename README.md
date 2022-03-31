@@ -41,3 +41,4 @@ This project contains work that I completed as part of various e-learning course
 
 9. `31/03/2022`
    - added MITx 6.004x Computation Structures Lab 5 Assembly Language solutions
+   - added MITx 6.004x Computation Structures part 2 notes
