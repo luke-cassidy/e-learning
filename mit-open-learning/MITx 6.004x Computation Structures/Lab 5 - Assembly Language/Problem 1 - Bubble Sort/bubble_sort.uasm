@@ -1,0 +1,39 @@
+.include "beta.uasm"
+
+        BR(STEP1)   // start execution with Step 1
+
+        // the array to be sorted
+        A:      LONG(10) LONG(56) LONG(27) LONG(69) LONG(73) LONG(99)
+                LONG(44) LONG(36) LONG(10) LONG(72) LONG(71) LONG(1)
+
+ALEN = (. - A)/4    // determine number of elements in A
+
+// Please enter your code for each of the steps below...
+
+i = R0        // use R0 to hold the value of i
+swapped = R1  // use R1 to hold the value of swapped
+
+STEP1:	CMOVE(0, swapped) // set swapped to 0
+STEP2:	CMOVE(0, i) // set i to 0
+STEP3:	ADDC(i, 1, i) // increment i
+		CMPLTC(i, ALEN, R2) // check if i < ALEN
+		BEQ(R2, STEP5) // branch to STEP5 if i > ALEN
+STEP4:	MULC(i, 4, R2) // calculate relative mem address of element i
+		LD(R2, A-4, R3)	// load i-1
+		LD(R2, A, R4)	// load i
+		CMPLE(R3, R4, R5) // check if i-1 val <= i val
+		BNE(R5, STEP3) // branch to STEP3 if i-1 val <= i val (i.e. do nothing)
+		ST(R3, A, R2)	// set i-1 to i
+		ST(R4, A-4, R2)	// set i to i-1
+		CMOVE(1, swapped) // set swapped to 1
+		BR(STEP3) // branch to STEP3
+STEP5:	CMPEQC(swapped, 1, R2) // check swapped = 1
+		CMOVE(0, swapped) // set swapped back to 0
+		CMOVE(0, i) // set i back to 0
+		BNE(R2, STEP3) // branch to STEP3 if swapped = 1, else sort is complete
+
+// When step 5 is complete, execution continues with the
+// checkoff code.  You must include this code in order to
+// receive credit for completing the problem.
+.include "checkoff.uasm"
+
