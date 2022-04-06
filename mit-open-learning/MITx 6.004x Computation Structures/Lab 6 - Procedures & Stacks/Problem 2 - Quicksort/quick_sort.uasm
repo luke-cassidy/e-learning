@@ -1,0 +1,188 @@
+////////////////////////////////////////////////////////////////////////////////
+// Lab 4
+////////////////////////////////////////////////////////////////////////////////
+
+// Include the checkoff program:
+.include "checkoff.uasm"
+
+// Leave the following as zero to run ALL the test cases, and get your solution
+//   validated if all pass.  If you have trouble with test case N, set it to N
+//   to run JUST that test case (for easier debugging):
+TestCase:       LONG(2)
+
+// Quicksort-in-place code.  We include the C/Python version here as a comment;
+// you can use this as a model for your Beta assembly version:
+
+//def partition(array,left,right):
+//    # choose middle element of array as pivot
+//    pivotIndex = (left+right) >> 1;
+//    pivotValue = array[pivotIndex]
+//
+//    # swap array[right] and array[pivotIndex]
+//    # note that we already store array[pivotIndex] in pivotValue
+//    array[pivotIndex] = array[right]
+//
+//    # elements <= the pivot are moved to the left (smaller indices)
+//    storeIndex = left
+//    for i in xrange(left,right):  # don't include array[right]
+//        temp = array[i]
+//        if temp <= pivotValue:
+//            array[i] = array[storeIndex]
+//            array[storeIndex] = temp
+//            storeIndex += 1
+//
+//    # move pivot to its final place
+//    array[right] = array[storeIndex]
+//    array[storeIndex] = pivotValue;
+//    return storeIndex;
+
+partition:
+        PUSH(LP)
+        PUSH(BP)
+        MOVE(SP, BP)
+
+// Fill in your code here...
+	    p_array=r1 // base address of array (arg 0)
+	    p_left=r2
+	    p_right=r3
+    	p_pivotIndex=r4 // Corresponds to PivotIndex in C program
+    	p_pivotValue=r5
+    	p_storeIndex=r6
+		
+		// save register state
+		PUSH(p_array)
+		PUSH(p_left)
+		PUSH(p_right)
+		PUSH(p_pivotIndex)
+		PUSH(p_pivotValue)
+		PUSH(p_storeIndex)
+		PUSH(r7)
+		PUSH(r8)
+
+		// logic
+		// load args in to registers
+		LD(BP, -12, p_array) // load array
+		LD(BP, -16, p_left) // load left
+		LD(BP, -20, p_right) // load right
+
+		// pivotIndex = (left+right) >> 1;
+		ADD(p_left, p_right, p_pivotIndex)
+		SHR(p_pivotIndex, 1, p_pivotIndex)
+		// pivotValue = array[pivotIndex]
+		MULC(p_pivotIndex, 4, p_pivotValue)
+		ADD(p_array, p_pivotValue, p_pivotValue)
+		LD(p_pivotValue, 0, p_pivotValue)
+		// # swap array[right] and array[pivotIndex]
+		// array[pivotIndex] = array[right]
+		MULC(p_right, 4, r7)
+		ADD(p_array, r7, r7)
+		LD(r7, 0, r7) // array[right] value
+		MULC(p_pivotIndex, 4, r8)
+		ADD(p_array, r8, r8) // array[pivotIndex] address
+		ST(r7, 0, r8) // store array[right] into array[pivotIndex]
+		// storeIndex = left
+		MOVE(p_storeIndex, p_left)
+		
+
+
+		
+p_return: // return instructions
+		// restore saved register state
+		PUSH(r8)
+		PUSH(r7)
+		PUSH(p_storeIndex)
+		POP(p_pivotValue)
+		POP(p_pivotIndex)
+		POP(p_right)
+		POP(p_left)
+		POP(p_array)
+		// no need to de-acclocate as stake pointer is decremented in next instruction
+        MOVE(BP, SP)
+        POP(BP)
+        POP(LP)
+        JMP(LP)
+
+
+//def quicksort(array, left, right):
+//    if left < right:
+//        pivotIndex = partition(array,left,right)
+//        quicksort(array,left,pivotIndex-1)
+//        quicksort(array,pivotIndex+1,right)
+
+// quicksort(ArrayBase, left, right)
+quicksort:
+        PUSH(LP)
+        PUSH(BP)
+        MOVE(SP, BP)
+		
+// Fill in your code here...
+		// allocate space for local variable (pivotIndex)
+		ALLOCATE(1)
+		// save register state
+		PUSH(r1)
+		PUSH(r2)
+		PUSH(r3)
+		PUSH(r4)
+		PUSH(r5)
+		
+		// logic
+		// load args in to registers
+		LD(BP, -12, r1) // load array
+		LD(BP, -16, r2) // load left
+		LD(BP, -20, r3) // load right
+		CMPLT(r2, r3, r4)
+		BF(r4, q_return) // branch to return instructions
+		
+		.breakpoint
+
+		// call partition
+		PUSH(r3) // push right
+		PUSH(r2) // push left
+		PUSH(r1) // push array
+		BR(partition, LP) // branch to partition
+		DEALLOCATE(3) // clean up args from stack
+		ST(r0, 0, BP) // store return value in local variable (pivotIndex)
+		
+		.breakpoint
+
+		// call quicksort on left
+		LD(BP, 0, r4) // load (pivotIndex)
+		SUBC(r4, 1, r5) // calc pivotIndex - 1
+		PUSH(r5) // push pivotIndex - 1
+		PUSH(r2) // push left
+		PUSH(r1) // push array
+		BR(quicksort, LP) // branch to quicksort
+		DEALLOCATE(3) // clean up args from stack
+		
+		.breakpoint
+
+		// call quicksort on right
+		LD(BP, 0, r4) // load (pivotIndex)
+		ADDC(r4, 1, r5) // calc pivotIndex + 1
+		PUSH(r3) // push right
+		PUSH(r5) // push pivotIndex + 1
+		PUSH(r1) // push array
+		BR(quicksort, LP) // branch to quicksort
+		DEALLOCATE(3) // clean up args from stack
+		
+q_return: // return instructions
+		// restore saved register state
+		POP(r5)
+		POP(r4)
+		POP(r3)
+		POP(r2)
+		POP(r1)
+		// no need to de-acclocate as stake pointer is decremented in next instruction
+        MOVE(BP, SP)
+        POP(BP)
+        POP(LP)
+        JMP(LP)
+
+// Allocate a stack: SP is initialized by checkoff code.
+StackBasePtr:
+        LONG(StackArea)
+
+.unprotect
+
+StackArea:
+        STORAGE(1000)
