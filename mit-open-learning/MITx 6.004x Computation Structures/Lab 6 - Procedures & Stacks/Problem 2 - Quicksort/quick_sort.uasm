@@ -8,7 +8,7 @@
 // Leave the following as zero to run ALL the test cases, and get your solution
 //   validated if all pass.  If you have trouble with test case N, set it to N
 //   to run JUST that test case (for easier debugging):
-TestCase:       LONG(2)
+TestCase:       LONG(0)
 
 // Quicksort-in-place code.  We include the C/Python version here as a comment;
 // you can use this as a model for your Beta assembly version:
@@ -61,7 +61,7 @@ partition:
 		PUSH(r9)
 		PUSH(r10)
 		PUSH(r11)
-
+		
 		// logic
 		// load args in to registers
 		LD(BP, -12, p_array) // load array
@@ -70,7 +70,7 @@ partition:
 
 		// pivotIndex = (left+right) >> 1;
 		ADD(p_left, p_right, p_pivotIndex)
-		SHR(p_pivotIndex, 1, p_pivotIndex)
+		SHRC(p_pivotIndex, 1, p_pivotIndex)
 		// pivotValue = array[pivotIndex]
 		MULC(p_pivotIndex, 4, p_pivotValue)
 		ADD(p_array, p_pivotValue, p_pivotValue)
