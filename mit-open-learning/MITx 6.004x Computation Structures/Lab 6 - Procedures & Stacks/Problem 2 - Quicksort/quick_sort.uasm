@@ -58,6 +58,9 @@ partition:
 		PUSH(p_storeIndex)
 		PUSH(r7)
 		PUSH(r8)
+		PUSH(r9)
+		PUSH(r10)
+		PUSH(r11)
 
 		// logic
 		// load args in to registers
@@ -81,16 +84,52 @@ partition:
 		ADD(p_array, r8, r8) // array[pivotIndex] address
 		ST(r7, 0, r8) // store array[right] into array[pivotIndex]
 		// storeIndex = left
-		MOVE(p_storeIndex, p_left)
+		MOVE(p_left, p_storeIndex)
+		// for loop
+		p_i=r7 // define i
+		MOVE(p_left, p_i) // set i to left
+		p_temp=r8 // define temp
+		BR(Ltest) // branch to Ltest
+Lwhile:
+		MULC(p_i, 4, p_temp)
+		ADD(p_array, p_temp, p_temp)
+		LD(p_temp, 0, p_temp) // load array[i] into temp
+		CMPLE(p_temp, p_pivotValue, r9) // check temp <= pivotValue
+		BF(r9, Lendif) // branch to LendIf if false
+		MULC(p_storeIndex, 4, r9)
+		ADD(p_array, r9, r9) // calc array[storeIndex] address
+		LD(r9, 0, r10) // load array[storeIndex]
+		MULC(p_i, 4, r11)
+		ADD(p_array, r11, r11) // calc array[i] address
+		ST(r10, 0, r11) // store array[storeIndex] into array[i]
+		ST(p_temp, 0, r9) // store temp into array[storeIndex]
+		ADDC(p_storeIndex, 1, p_storeIndex) // increment storeIndex
+Lendif:
+		ADDC(p_i, 1, p_i) // increment i
+Ltest:
+		CMPLT(p_i, p_right, r9) // check if i < right
+		BT(r9, Lwhile) // branch to Lwhile if i < right loop
+
+		// array[right] = array[storeIndex]
+		MULC(p_storeIndex, 4, r7)
+		ADD(p_array, r7, r7) // array[storeIndex] address
+		LD(r7, 0, r8) // array[storeIndex] value
+		MULC(p_right, 4, r9)
+		ADD(p_array, r9, r9) // array[right] address
+		ST(r8, 0, r9) // store array[storeIndex] into array[right]
 		
-
-
+		// array[storeIndex] = pivotValue;
+		ST(p_pivotValue, 0, r7) // store pivotValue into array[storeIndex]
 		
 p_return: // return instructions
+		MOVE(p_storeIndex, r0) // set return value
 		// restore saved register state
-		PUSH(r8)
-		PUSH(r7)
-		PUSH(p_storeIndex)
+		POP(r11)
+		POP(r10)
+		POP(r9)
+		POP(r8)
+		POP(r7)
+		POP(p_storeIndex)
 		POP(p_pivotValue)
 		POP(p_pivotIndex)
 		POP(p_right)
@@ -133,8 +172,6 @@ quicksort:
 		CMPLT(r2, r3, r4)
 		BF(r4, q_return) // branch to return instructions
 		
-		.breakpoint
-
 		// call partition
 		PUSH(r3) // push right
 		PUSH(r2) // push left
@@ -143,8 +180,6 @@ quicksort:
 		DEALLOCATE(3) // clean up args from stack
 		ST(r0, 0, BP) // store return value in local variable (pivotIndex)
 		
-		.breakpoint
-
 		// call quicksort on left
 		LD(BP, 0, r4) // load (pivotIndex)
 		SUBC(r4, 1, r5) // calc pivotIndex - 1
@@ -154,8 +189,6 @@ quicksort:
 		BR(quicksort, LP) // branch to quicksort
 		DEALLOCATE(3) // clean up args from stack
 		
-		.breakpoint
-
 		// call quicksort on right
 		LD(BP, 0, r4) // load (pivotIndex)
 		ADDC(r4, 1, r5) // calc pivotIndex + 1
