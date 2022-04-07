@@ -153,7 +153,7 @@ quicksort:
         PUSH(LP)
         PUSH(BP)
         MOVE(SP, BP)
-		
+				
 // Fill in your code here...
 		// allocate space for local variable (pivotIndex)
 		ALLOCATE(1)
@@ -169,6 +169,9 @@ quicksort:
 		LD(BP, -12, r1) // load array
 		LD(BP, -16, r2) // load left
 		LD(BP, -20, r3) // load right
+		
+		//.breakpoint
+
 		CMPLT(r2, r3, r4)
 		BF(r4, q_return) // branch to return instructions
 		
