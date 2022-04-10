@@ -45,3 +45,6 @@ This project contains work that I completed as part of various e-learning course
 
 10. `07/04/2022`
     - added MITx 6.004x Computation Structures Lab 6 Procedures & Stacks solutions
+
+11. `10/04/2022`
+    - added MITx 6.004x Computation Structures Lab 7 Building the Beta solutions
