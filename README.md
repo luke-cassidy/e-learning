@@ -52,3 +52,7 @@ This project contains work that I completed as part of various e-learning course
 12. `28/04/2022`
     - added MITx 6.004x Computation Structures Lab 8 Caches solutions
     - finished MITx 6.004x Computation Structures Part 2: Computer Architecture
+
+13. `03/05/2022`
+    - added pipelined beta diagram for MITx 6.004x Computation Structures
+    - started MITx 6.004x Computation Structures Lab 9: Optimizing the Beta
