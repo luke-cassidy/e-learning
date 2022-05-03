@@ -51,3 +51,4 @@ This project contains work that I completed as part of various e-learning course
 
 12. `28/04/2022`
     - added MITx 6.004x Computation Structures Lab 8 Caches solutions
+    - finished MITx 6.004x Computation Structures Part 2: Computer Architecture
