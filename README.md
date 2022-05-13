@@ -56,3 +56,6 @@ This project contains work that I completed as part of various e-learning course
 13. `03/05/2022`
     - added pipelined beta diagram for MITx 6.004x Computation Structures
     - started MITx 6.004x Computation Structures Lab 9: Optimizing the Beta
+
+14. `13/05/2022`
+    - finished MITx 6.004x Computation Structures Lab 9: Optimizing the Beta
