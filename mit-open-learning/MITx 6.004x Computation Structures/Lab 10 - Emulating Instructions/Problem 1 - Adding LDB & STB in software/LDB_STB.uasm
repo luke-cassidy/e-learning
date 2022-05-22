@@ -1,30 +1,25 @@
 .include "beta.uasm"
 .include "checkoff.uasm"
 
-.macro UUO(ADR) LONG(ADR+0x80000000)   // Emulated Instruction handler address.
-.macro BAD() UUO(_IllegalInstruction)  // Illegal Instruction handler address.
-.macro GOOD() UUO(back)                // Legal Instruction handler address (should never get used).
-
 regs:
   RESERVE(32)                // Array used to store register contents
-
-UUOTbl:                      // dispatch table
-  BAD()     UUO(swapreg)  BAD() BAD()     BAD()     BAD()     BAD()     BAD()
-  BAD()     BAD()     BAD()     BAD()     BAD()     BAD()     BAD()     BAD()
-  UUO(ldb)  UUO(stb)  BAD()     BAD()     BAD()     BAD()     BAD()     BAD()
-  GOOD()    GOOD()    BAD()     GOOD()    GOOD()    GOOD()    BAD()     GOOD()
-  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
-  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
-  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
-  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
   
 UI: 
   save_all_regs(regs)
- 
+  
   LD(xp,-4,r0)               // illegal instruction
   extract_field(r0,31,26,r1) // extract opcode, bits 31:26
-  LD(r1,UUOTbl,r1)           // load handler address from UUOTbl dispatch table
-  JMP(r1)                    // dispatch to UUO handler
+  CMPEQC(r1,0x1,r2)          // OPCODE=0x1?
+  BT(r2, swapreg)            // yes, handle the swapreg instruction.
+  CMPEQC(r1,0x10,r2)         // OPCODE=0x10?
+  BT(r2, ldb)                // yes, handle the LDB instruction.
+  CMPEQC(r1,0x11,r2)         // OPCODE=0x11?
+  BT(r2, stb)                // yes, handle the STB instruction.
+
+  LD(r31,regs,r0)            // Its something else.  Restore regs
+  LD(r31,regs+4,r1)          // we've used, and go to the system's
+  LD(r31,regs+8,r2)          // Illegal Instruction handler.
+  BR(_IllegalInstruction)
 
 // Handler for opcode 0x1 extension:
 // swapreg(RA,RC) swaps the contents of the two named registers.
@@ -48,7 +43,20 @@ ldb:
   MULC(r1, 4, r1)             // convert to byte offset into regs array
   extract_field(r0,20,16,r2)  // extract ra field from trapped instruction
   MULC(r2, 4, r2)             // convert to byte offset into regs array
-  .breakpoint
+  extract_field(r0,15,0,r3)   // extract literal field from trapped instruction
+  
+  LD(r2,regs,r4)              // load ra value
+  SHLC(r3,16,r5)              // shift literal left so high-order bit is in word high-order bit position
+  SRAC(r5,16,r5)              // sign-extend literal using arithmetic right shift 
+  ADD(r4,r5,r5)               // add ra and SEXT(literal) = EA
+  ANDC(r5,0x3,r6)             // get low order index bits from EA
+  MULC(r6,8,r6)               // convert index bits to shift value
+  
+  LD(r5,0,r7)                 // load value from EA mem address
+  SHR(r7,r6,r7)               // shift bits to correct position according to low order EA value
+  ANDC(r7,0xFF,r7)            // extract byte value using bit mask
+
+  ST(r7,regs,r1)              // set regs[rc] to byte value
   BR(back)                    // back to user-mode
 
 // Handler for opcode 0x11 extension:
@@ -59,7 +67,26 @@ stb:
   MULC(r1, 4, r1)             // convert to byte offset into regs array
   extract_field(r0,20,16,r2)  // extract ra field from trapped instruction
   MULC(r2, 4, r2)             // convert to byte offset into regs array
-  .breakpoint
+  extract_field(r0,15,0,r3)   // extract literal field from trapped instruction
+  
+  LD(r2,regs,r4)              // load ra value
+  SHLC(r3,16,r5)              // shift literal left so high-order bit is in word high-order bit position
+  SRAC(r5,16,r5)              // sign-extend literal using arithmetic right shift 
+  ADD(r4,r5,r5)               // add ra and SEXT(literal) = EA
+  ANDC(r5,0x3,r6)             // get low order index bits from EA
+  MULC(r6,8,r6)               // convert index bits to shift value
+  LD(r1,regs,r7)              // load rc value
+  ANDC(r7,0x00FF,r7)          // extract byte value using bit mask
+  SHL(r7,r6,r7)               // shift bits to correct position according to low order EA value
+  
+  CMOVE(0x00FF,r8)            // move bit mask into register
+  SHL(r8,r6,r8)               // shift bit mask according to low order bits
+  XORC(r8,0xFFFF,r8)          // invert bit mask
+  LD(r5,0,r9)                 // load value from EA mem address
+  AND(r9,r8,r9)               // clear relevant byte block using bit mask
+  ADD(r7,r9,r10)              // insert byte into word
+  
+  ST(r10,0,r5)                // store modified word in EA mem address
   BR(back)                    // back to user-mode
 
 back:
