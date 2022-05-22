@@ -59,3 +59,6 @@ This project contains work that I completed as part of various e-learning course
 
 14. `13/05/2022`
     - finished MITx 6.004x Computation Structures Lab 9: Optimizing the Beta
+
+15. `22/05/2022`
+    - finished MITx 6.004x Computation Structures Lab 10: Emulating Instructions
