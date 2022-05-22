@@ -1,0 +1,67 @@
+.include "beta.uasm"
+.include "checkoff.uasm"
+
+.macro UUO(ADR) LONG(ADR+0x80000000)   // Emulated Instruction handler address.
+.macro BAD() UUO(_IllegalInstruction)  // Illegal Instruction handler address.
+.macro GOOD() UUO(back)                // Legal Instruction handler address (should never get used).
+
+regs:
+  RESERVE(32)                // Array used to store register contents
+
+UUOTbl:                      // dispatch table
+  BAD()     UUO(swapreg)  BAD() BAD()     BAD()     BAD()     BAD()     BAD()
+  BAD()     BAD()     BAD()     BAD()     BAD()     BAD()     BAD()     BAD()
+  UUO(ldb)  UUO(stb)  BAD()     BAD()     BAD()     BAD()     BAD()     BAD()
+  GOOD()    GOOD()    BAD()     GOOD()    GOOD()    GOOD()    BAD()     GOOD()
+  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
+  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
+  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
+  GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    GOOD()    BAD()
+  
+UI: 
+  save_all_regs(regs)
+ 
+  LD(xp,-4,r0)               // illegal instruction
+  extract_field(r0,31,26,r1) // extract opcode, bits 31:26
+  LD(r1,UUOTbl,r1)           // load handler address from UUOTbl dispatch table
+  JMP(r1)                    // dispatch to UUO handler
+
+// Handler for opcode 0x1 extension:
+// swapreg(RA,RC) swaps the contents of the two named registers.
+// UASM defn = .macro swapreg(RA,RC) betaopc(0x01,RA,0,RC)
+swapreg:
+  extract_field(r0,25,21,r1)  // extract rc field from trapped instruction
+  MULC(r1, 4, r1)             // convert to byte offset into regs array
+  extract_field(r0,20,16,r2)  // extract ra field from trapped instruction
+  MULC(r2, 4, r2)             // convert to byte offset into regs array
+  LD(r1, regs, r3)            // r3 <- regs[rc]
+  LD(r2, regs, r4)            // r4 <- regs[ra]
+  ST(r4, regs, r1)            // regs[rc] <- old regs[ra]
+  ST(r3, regs, r2)            // regs[ra] <- old regs[rc]
+  BR(back)                    // back to user-mode
+
+// Handler for opcode 0x10 extension:
+// LDB(Ra, literal, Rc) load operation for byte (8-bit) data.
+// UASM defn = .macro LDB(RA,CC,RC) betaopc(0x10,RA,CC,RC)
+ldb:
+  extract_field(r0,25,21,r1)  // extract rc field from trapped instruction
+  MULC(r1, 4, r1)             // convert to byte offset into regs array
+  extract_field(r0,20,16,r2)  // extract ra field from trapped instruction
+  MULC(r2, 4, r2)             // convert to byte offset into regs array
+  .breakpoint
+  BR(back)                    // back to user-mode
+
+// Handler for opcode 0x11 extension:
+// STB(Rc, literal, Ra) store operation for byte (8-bit) data.
+// UASM defn = .macro STB(RC,CC,RA) betaopc(0x11,RA,CC,RC)
+stb:
+  extract_field(r0,25,21,r1)  // extract rc field from trapped instruction
+  MULC(r1, 4, r1)             // convert to byte offset into regs array
+  extract_field(r0,20,16,r2)  // extract ra field from trapped instruction
+  MULC(r2, 4, r2)             // convert to byte offset into regs array
+  .breakpoint
+  BR(back)                    // back to user-mode
+
+back:
+  restore_all_regs(regs)      // restore user-mode reg state
+  JMP(xp)                     // continue user-mode program
