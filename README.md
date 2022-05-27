@@ -62,3 +62,6 @@ This project contains work that I completed as part of various e-learning course
 
 15. `22/05/2022`
     - finished MITx 6.004x Computation Structures Lab 10: Emulating Instructions
+
+16. `27/05/2022`
+    - finished MITx 6.004x Computation Structures Lab 11: Tiny Operating System

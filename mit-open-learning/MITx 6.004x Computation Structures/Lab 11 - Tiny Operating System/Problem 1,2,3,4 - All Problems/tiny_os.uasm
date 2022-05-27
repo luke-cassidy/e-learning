@@ -596,9 +596,9 @@ P0Read: Wait(Prompt)            // Wait until P1 has caught up...
 
         LD(P0LinP, r3)          // ...then read a line into buffer...
 
-	GetKey()                // read first character
-	Wait(Line)      	// Wait until P3 finished mouse click...
-	BR(.+8)                 // skip reading next char initially
+        GetKey()                // read first character
+        Wait(Line)              // Wait until P3 finished mouse click...
+        BR(.+8)                 // skip reading next char initially
 P0RdCh: GetKey()                // read next character,
         WrCh()                  // echo back to user
         CALL(UCase)             // Convert it to upper case,
@@ -777,20 +777,20 @@ Count3: LONG(0)
 
 P3Start:
         Mouse()                 // retrieve mouse click
-	Wait(Line)              // wait for line to finish
-	MOVE(r0,r1)
-	WrMsg()
+        Wait(Line)              // wait for line to finish
+        MOVE(r0,r1)
+        WrMsg()
         .text "\nClick at x="
-	SHRC(r1,16,r0)          // get x
-	HexPrt()
-	WrMsg()
+        SHRC(r1,16,r0)          // get x
+        HexPrt()
+        WrMsg()
         .text ", y="
-	SHLC(r1,16,r1) 		// remove high order bits
-	SHRC(r1,16,r0)  	// get y
-	HexPrt()
-	WrMsg()
+        SHLC(r1,16,r1)          // remove high order bits
+        SHRC(r1,16,r0)          // get y
+        HexPrt()
+        WrMsg()
         .text "\n"
-	Signal(Line)		// signal that mouse click event has finished being handled
-	BR(P3Start)
+        Signal(Line)            // signal that mouse click event has finished being handled
+        BR(P3Start)
 
 P3Stack: STORAGE(256)
