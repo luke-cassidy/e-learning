@@ -65,3 +65,7 @@ This project contains work that I completed as part of various e-learning course
 
 16. `27/05/2022`
     - finished MITx 6.004x Computation Structures Lab 11: Tiny Operating System
+
+17. `30/06/2022`
+    - finished MITx 6.004x Computation Structures
+    - started Coursera: Kotlin for Java Developers course
