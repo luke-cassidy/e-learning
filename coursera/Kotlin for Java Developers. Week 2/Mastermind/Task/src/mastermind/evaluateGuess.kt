@@ -19,10 +19,13 @@ fun evaluateGuess(secret: String, guess: String): Evaluation {
         }
     }
 
-    for (char: Char in guessList) {
-        if (char != PLACEHOLDER && char in secretList) {
-            wrongPosition++
-            secretList.remove(char)
+    for (guessChar: Char in guessList) {
+        for ((secretIndex, secretChar) in secretList.withIndex()) {
+            if (guessChar != PLACEHOLDER && guessChar == secretChar) {
+                wrongPosition++
+                secretList[secretIndex] = PLACEHOLDER
+                break
+            }
         }
     }
     return Evaluation(rightPosition, wrongPosition)
