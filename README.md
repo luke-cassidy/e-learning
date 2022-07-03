@@ -72,4 +72,5 @@ This project contains work that I completed as part of various e-learning course
 
 18. `03/07/2022`
     - finished Coursera: Kotlin for Java Developers week 2 assignment
+    - finished week 2
     - started week 3 work
