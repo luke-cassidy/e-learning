@@ -1,2 +1,3 @@
 rootProject.name = "kotlin-for-java-developers"
-include("week1")
+include("week2")
+include("week3")
