@@ -69,3 +69,7 @@ This project contains work that I completed as part of various e-learning course
 17. `30/06/2022`
     - finished MITx 6.004x Computation Structures
     - started Coursera: Kotlin for Java Developers course
+
+18. `03/07/2022`
+    - finished Coursera: Kotlin for Java Developers week 2 assignment
+    - started week 3 work
