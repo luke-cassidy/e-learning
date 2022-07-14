@@ -1,11 +1,5 @@
 type: edu
 files:
-- name: partId
-  visible: false
-  learner_created: false
-- name: assignmentKey
-  visible: false
-  learner_created: false
 - name: src/mastermind/evaluateGuess.kt
   visible: true
   placeholders:
@@ -256,13 +250,18 @@ files:
         fun test26() = testEvaluation("BACD", "EAFF", 1, 0)
     }
   learner_created: false
-- name: src/mastermind/functional/evaluateGuess.kt
+- name: partId
+  visible: false
+  learner_created: false
+- name: assignmentKey
+  visible: false
+  learner_created: false
+- name: src/Util.kt
   visible: true
   learner_created: true
 feedback_link: https://www.coursera.org/learn/kotlin-for-java-developers/programming/vmwVT/mastermind-game/discussions
 status: Unchecked
 feedback:
-  message: Submission successful, please <a href="https://www.coursera.org/learn/kotlin-for-java-developers/programming/vmwVT/mastermind-game/submission">check
-    the status on Coursera</a>
-  time: Sun, 03 Jul 2022 20:55:03 UTC
+  message: Token is for a different assignment
+  time: Sun, 03 Jul 2022 15:19:03 UTC
 record: -1
