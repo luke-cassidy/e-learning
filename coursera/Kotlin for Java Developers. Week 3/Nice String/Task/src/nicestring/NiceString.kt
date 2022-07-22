@@ -12,3 +12,16 @@ fun String.isNice(): Boolean {
 
     return listOf(!containsSubString, containsVowels, containsDoubleLetter).count { it } >= 2
 }
+
+// more concise and efficient version
+fun String.isNiceConcise(): Boolean {
+    val containsSubString = setOf("bu", "ba", "be").any { this.contains(it) }
+
+    val containsVowels = this.count { it in setOf('a', 'e', 'i', 'o', 'u') } >= 3
+
+    val letters = 'a'..'z'
+    // this will break when predicate it first matched, meaning less iteration
+    val containsDoubleLetter = (0 until this.lastIndex).any { this[it] in letters && this[it] == this[it + 1] }
+
+    return listOf(!containsSubString, containsVowels, containsDoubleLetter).count { it } >= 2
+}

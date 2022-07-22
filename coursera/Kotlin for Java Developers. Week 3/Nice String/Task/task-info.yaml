@@ -9,8 +9,8 @@ files:
 - name: src/nicestring/NiceString.kt
   visible: true
   placeholders:
-  - offset: 55
-    length: 457
+  - offset: 51
+    length: 461
     placeholder_text: TODO()
     initial_state:
       length: 6
