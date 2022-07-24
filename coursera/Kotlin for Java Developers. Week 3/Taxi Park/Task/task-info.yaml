@@ -74,22 +74,22 @@ files:
     selected: true
     status: Unchecked
   - offset: 1422
-    length: 6
+    length: 114
     placeholder_text: TODO()
     initial_state:
       length: 6
       offset: 929
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
-  - offset: 1568
-    length: 6
+  - offset: 1672
+    length: 629
     placeholder_text: TODO()
     initial_state:
       length: 6
       offset: 1075
     initialized_from_dependency: false
-    selected: false
+    selected: true
     status: Unchecked
   text: |-
     package taxipark
@@ -1465,4 +1465,8 @@ files:
   learner_created: false
 feedback_link: https://www.coursera.org/learn/kotlin-for-java-developers/programming/xTPZT/taxi-park/discussions
 status: Unchecked
+feedback:
+  message: Submission successful, please <a href="https://www.coursera.org/learn/kotlin-for-java-developers/programming/xTPZT/taxi-park/submission">check
+    the status on Coursera</a>
+  time: Sun, 24 Jul 2022 14:10:26 UTC
 record: -1
