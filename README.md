@@ -79,3 +79,7 @@ This project contains work that I completed as part of various e-learning course
     - started Coursera: Kotlin for Java Developers week 3 assignment
     - finished NiceString assignment
     - started TaxiPark assignment
+
+20. `24/07/2022`
+    - finished TaxiPark assignment
+    - finished Coursera: Kotlin for Java Developers week 3
