@@ -83,3 +83,7 @@ This project contains work that I completed as part of various e-learning course
 20. `24/07/2022`
     - finished TaxiPark assignment
     - finished Coursera: Kotlin for Java Developers week 3
+
+21. `25/07/2022`
+    - started Coursera: Kotlin for Java Developers week 4
+    - finished properties section
