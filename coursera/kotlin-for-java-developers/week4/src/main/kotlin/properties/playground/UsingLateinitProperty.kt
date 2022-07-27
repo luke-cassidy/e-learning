@@ -1,4 +1,4 @@
-package playground
+package properties.playground
 
 class A {
     private lateinit var prop: String

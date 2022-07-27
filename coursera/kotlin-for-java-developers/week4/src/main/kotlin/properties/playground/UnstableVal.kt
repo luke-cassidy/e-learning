@@ -1,4 +1,4 @@
-package playground
+package properties.playground
 
 var ref: Int = 0
 

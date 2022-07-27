@@ -24,5 +24,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("nullability.playground.IsEmptyOrNullKt")
+    mainClass.set("properties.playground.UnstableValKt")
 }
