@@ -1,4 +1,4 @@
-package oop.playground;
+package oop;
 
 import oop.CompanionTest;
 
