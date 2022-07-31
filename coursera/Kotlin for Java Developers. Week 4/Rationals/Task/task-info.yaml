@@ -266,6 +266,9 @@ files:
         fun test4InRange6() = testInRange("687/969", "33/275", "31/50", false)
     }
   learner_created: false
+- name: src/rationals/optimized/RationalOptimized.kt
+  visible: true
+  learner_created: true
 feedback_link: https://www.coursera.org/learn/kotlin-for-java-developers/programming/FNjea/rationals/discussions
 status: Unchecked
 feedback:

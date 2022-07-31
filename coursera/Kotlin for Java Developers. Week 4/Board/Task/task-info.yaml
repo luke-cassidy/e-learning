@@ -54,8 +54,8 @@ files:
 - name: src/board/BoardImpl.kt
   visible: true
   placeholders:
-  - offset: 64
-    length: 22
+  - offset: 90
+    length: 6
     placeholder_text: TODO()
     initial_state:
       length: 6
@@ -63,8 +63,8 @@ files:
     initialized_from_dependency: false
     selected: true
     status: Unchecked
-  - offset: 139
-    length: 20
+  - offset: 149
+    length: 6
     placeholder_text: TODO()
     initial_state:
       length: 6
@@ -442,8 +442,4 @@ files:
   learner_created: false
 feedback_link: https://www.coursera.org/learn/kotlin-for-java-developers/programming/7fkLn/board/discussions
 status: Unchecked
-feedback:
-  message: Submission successful, please <a href="https://www.coursera.org/learn/kotlin-for-java-developers/programming/7fkLn/board/submission">check
-    the status on Coursera</a>
-  time: Sun, 31 Jul 2022 16:41:43 UTC
 record: -1

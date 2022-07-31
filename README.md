@@ -87,3 +87,7 @@ This project contains work that I completed as part of various e-learning course
 21. `25/07/2022`
     - started Coursera: Kotlin for Java Developers week 4
     - finished properties section
+
+22. `31/07/2022`
+    - finished week 4 assignments
+    - finished Coursera: Kotlin for Java Developers week 4
