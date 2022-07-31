@@ -1,9 +1,9 @@
 package board
 
 fun createSquareBoard(width: Int): SquareBoard = SquareBoardImpl(width)
-fun <T> createGameBoard(width: Int): GameBoard<T> = TODO()
+fun <T> createGameBoard(width: Int): GameBoard<T> = GameBoardImpl(width)
 
-class SquareBoardImpl(override val width: Int) : SquareBoard {
+open class SquareBoardImpl(override val width: Int) : SquareBoard {
     private val cells: Array<Array<Cell>> = Array(width) { i -> Array(width) { j -> Cell(i + 1, j + 1) } }
 
     override fun getCellOrNull(i: Int, j: Int): Cell? {
@@ -60,3 +60,32 @@ class SquareBoardImpl(override val width: Int) : SquareBoard {
     }
 
 }
+
+class GameBoardImpl<T>(width: Int) : GameBoard<T>, SquareBoardImpl(width) {
+    private val values: MutableMap<Cell, T?> = mutableMapOf()
+    override operator fun get(cell: Cell): T? {
+        return this.values[cell]
+    }
+
+    override operator fun set(cell: Cell, value: T?) {
+        this.values[cell] = value
+    }
+
+    override fun all(predicate: (T?) -> Boolean): Boolean {
+        return this.getAllCells().map { this.values[it] }.all(predicate)
+    }
+
+    override fun any(predicate: (T?) -> Boolean): Boolean {
+        return this.getAllCells().map { this.values[it] }.any(predicate)
+    }
+
+    override fun find(predicate: (T?) -> Boolean): Cell? {
+        return this.values.entries.find { (_, value) -> predicate(value) }?.key
+    }
+
+    override fun filter(predicate: (T?) -> Boolean): Collection<Cell> {
+        return this.values.filter { (_, value) -> predicate(value) }.keys
+    }
+
+}
+
