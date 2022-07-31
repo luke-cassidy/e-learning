@@ -1,5 +1,6 @@
 package rationals
 
+import java.math.BigDecimal
 import java.math.BigInteger
 
 // class definition
@@ -7,7 +8,7 @@ data class Rational internal constructor(
     private var numerator: BigInteger,
     private var denominator: BigInteger
 ) : Comparable<Rational> {
-    private val quantifiedValue: BigInteger
+    private val quantifiedValue: BigDecimal
 
     init {
         if (denominator == 0.toBigInteger()) {
@@ -16,12 +17,12 @@ data class Rational internal constructor(
         val gcd = numerator.gcd(denominator)
         this.numerator /= gcd
         this.denominator /= gcd
-        this.quantifiedValue = numerator / denominator
+        this.quantifiedValue = numerator.toBigDecimal() / denominator.toBigDecimal()
     }
 
 
     override fun compareTo(other: Rational): Int {
-        return (this.quantifiedValue - other.quantifiedValue).compareTo(0.toBigInteger())
+        return (this.quantifiedValue - other.quantifiedValue).compareTo(0.toBigDecimal())
     }
 
     // arithmetic operator functions
@@ -58,7 +59,10 @@ data class Rational internal constructor(
     }
 
     override fun toString(): String {
-        return quantifiedValue.toString()
+        return when (this.denominator) {
+            1.toBigInteger() -> this.quantifiedValue.toString()
+            else -> "${this.numerator}/${this.denominator}"
+        }
     }
 }
 
