@@ -25,5 +25,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("library.functions.playground.InliningFilterFunctionKt")
+    mainClass.set("sequences.playground.FibonacciKt")
 }

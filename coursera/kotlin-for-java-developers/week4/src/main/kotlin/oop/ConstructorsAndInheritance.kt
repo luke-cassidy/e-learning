@@ -29,6 +29,10 @@ open class Person(name: String, age: Int) {
     internal constructor() : this("Blank Slate") {
         println("blank slate constructor")
     }
+
+    override fun toString(): String {
+        return "Person(name='$name', age=$age)"
+    }
 }
 
 class TalkablePerson(name: String, age: Int) : Person(name, age), Talkable {
