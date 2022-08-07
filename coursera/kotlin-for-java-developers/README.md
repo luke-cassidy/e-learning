@@ -9,6 +9,6 @@ This project contains work that I completed as part of the Coursera: Kotlin for 
 
 * `Site:` [Coursera](https://www.coursera.org/)
 * `Course:` [Coursera: Kotlin for Java Developers](https://www.coursera.org/learn/kotlin-for-java-developers)
-* `When:` Ongoing (WIP)
+* `When:` June - August 2022
 
 ======================================================================

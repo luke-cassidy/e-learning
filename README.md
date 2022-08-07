@@ -94,3 +94,8 @@ This project contains work that I completed as part of various e-learning course
 
 23. `01/08/2022`
     - started Coursera: Kotlin for Java Developers week 5
+
+24. `07/08/2022`
+    - finished week 5 assignments, Game2048, GameOfFifteen
+    - finished Coursera: Kotlin for Java Developers week 5
+    - finished Coursera: Kotlin for Java Developers course
