@@ -13,7 +13,7 @@ import games.game.Game
  * After implementing it you can try to play the game running 'PlayGame2048'.
  */
 fun newGame2048(initializer: Game2048Initializer<Int> = RandomGame2048Initializer): Game =
-        Game2048(initializer)
+    Game2048(initializer)
 
 class Game2048(private val initializer: Game2048Initializer<Int>) : Game {
     private val board = createGameBoard<Int?>(4)
@@ -41,7 +41,7 @@ class Game2048(private val initializer: Game2048Initializer<Int>) : Game {
  * Add a new value produced by 'initializer' to a specified cell in a board.
  */
 fun GameBoard<Int?>.addNewValue(initializer: Game2048Initializer<Int>) {
-    TODO()
+    initializer.nextValue(this)?.let { this[it.first] = it.second }
 }
 
 /*
@@ -53,7 +53,18 @@ fun GameBoard<Int?>.addNewValue(initializer: Game2048Initializer<Int>) {
  * Return 'true' if the values were moved and 'false' otherwise.
  */
 fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
-    TODO()
+    var changed = false
+    val movedRowOrColumnValues = rowOrColumn
+        .map { this[it] }
+        .moveAndMergeEqual { it * 2 }
+
+    rowOrColumn.forEachIndexed { index, cell ->
+        val prevValue = this[cell]
+        val movedValue = movedRowOrColumnValues.getOrNull(index)
+        if (prevValue != movedValue) changed = true
+        this[cell] = movedValue
+    }
+    return changed
 }
 
 /*
@@ -64,5 +75,14 @@ fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
  * Return 'true' if the values were moved and 'false' otherwise.
  */
 fun GameBoard<Int?>.moveValues(direction: Direction): Boolean {
-    TODO()
+    val selector: (Int) -> List<Cell> = when (direction) {
+        Direction.UP -> { index: Int -> this.getColumn(1..this.width, index) }
+        Direction.DOWN -> { index: Int -> this.getColumn(1..this.width, index).reversed() }
+        Direction.LEFT -> { index: Int -> this.getRow(index, 1..this.width) }
+        Direction.RIGHT -> { index: Int -> this.getRow(index, 1..this.width).reversed() }
+    }
+
+    var changed = false
+    (1..this.width).forEach { if (moveValuesInRowOrColumn(selector(it))) changed = true }
+    return changed
 }

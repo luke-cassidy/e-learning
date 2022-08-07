@@ -3,7 +3,7 @@ package board
 fun createSquareBoard(width: Int): SquareBoard = SquareBoardImpl(width)
 fun <T> createGameBoard(width: Int): GameBoard<T> = GameBoardImpl(width)
 
-open class SquareBoardImpl(override val width: Int) : SquareBoard {
+open class SquareBoardImpl(final override val width: Int) : SquareBoard {
     private val cells: Array<Array<Cell>> = Array(width) { i -> Array(width) { j -> Cell(i + 1, j + 1) } }
 
     override fun getCellOrNull(i: Int, j: Int): Cell? {
@@ -80,11 +80,11 @@ class GameBoardImpl<T>(width: Int) : GameBoard<T>, SquareBoardImpl(width) {
     }
 
     override fun find(predicate: (T?) -> Boolean): Cell? {
-        return this.values.entries.find { (_, value) -> predicate(value) }?.key
+        return this.getAllCells().find { cell -> predicate(this.values.getOrDefault(cell, null)) }
     }
 
     override fun filter(predicate: (T?) -> Boolean): Collection<Cell> {
-        return this.values.filter { (_, value) -> predicate(value) }.keys
+        return this.getAllCells().filter { cell -> predicate(this.values.getOrDefault(cell, null)) }
     }
 
 }

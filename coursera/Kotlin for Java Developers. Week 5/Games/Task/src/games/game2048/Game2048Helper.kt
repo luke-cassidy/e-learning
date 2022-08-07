@@ -18,5 +18,25 @@ package games.game2048
  * You can find more examples in 'TestGame2048Helper'.
 */
 fun <T : Any> List<T?>.moveAndMergeEqual(merge: (T) -> T): List<T> =
-        TODO()
+    this.filterNotNull().let { list: List<T> ->
+        val result = mutableListOf<T>()
+        var i = 0
+        while (i <= list.lastIndex) {
+            if (i == list.lastIndex) {
+                result += list[i]
+                i++
+                break
+            }
+            Pair(list[i], list[i + 1]).run {
+                if (first == second) {
+                    result += merge(first)
+                    i += 2
+                } else {
+                    result += first
+                    i++
+                }
+            }
+        }
+        result
+    }
 

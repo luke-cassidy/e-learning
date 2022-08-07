@@ -11,9 +11,9 @@ interface Game2048Initializer<T> {
     fun nextValue(board: GameBoard<T?>): Pair<Cell, T>?
 }
 
-object RandomGame2048Initializer: Game2048Initializer<Int> {
+object RandomGame2048Initializer : Game2048Initializer<Int> {
     private fun generateRandomStartValue(): Int =
-            if (Random.nextInt(10) == 9) 4 else 2
+        if (Random.nextInt(10) == 9) 4 else 2
 
     /*
      * Generate a random value and a random cell among free cells
@@ -23,6 +23,9 @@ object RandomGame2048Initializer: Game2048Initializer<Int> {
      * If the board is full return null.
      */
     override fun nextValue(board: GameBoard<Int?>): Pair<Cell, Int>? {
-        TODO()
+        return (board.getAllCells() - board.filter { it != null }.toSet()).let {
+            if (it.isEmpty()) return null
+            Pair(it.random(), listOf(2, 2, 2, 2, 2, 2, 2, 2, 2, 4).random())
+        }
     }
 }
